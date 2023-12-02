@@ -31,7 +31,7 @@ def generate_response(input_text):
 
     chat_prompt.format_messages(joke_type=joke_type, input_text=input_text)
 
-    chain = chat_prompt | chat_model
+    chain = chat_prompt | ChatOpenAI()
     respomse = chain.invoke()
 
     st.info(respomse)
