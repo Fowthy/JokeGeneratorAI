@@ -34,7 +34,7 @@ def generate_response(input_text):
     chain = chat_prompt | chat_model | ParseOutput()
     respomse = chain.invoke({"input_text": input_text, "joke_type": joke_type})
 
-    st.info(respomse.content)
+    st.info(respomse)
 
 
 
