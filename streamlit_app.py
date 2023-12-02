@@ -26,13 +26,13 @@ def generate_response(input_text):
     criticism_model = ChatOpenAI(openai_api_key=openai_api_key)
     finalization_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    template = "You are an AI that generates jokes. You answer only what you were asked, in short, concrete answers. You output only the joke, no quotes or other text. You make the joke about goverment."
+    template = "You are an AI that generates jokes. You answer only what you were asked, in short, concrete answers."
 
     template2 = f"{template} You analyse the joke and refine it in understandable way."
 
     template3 = f"{template2} You critisize the joke and give feedback on what is funny and what is not funny. You output your answer with the joke first and then the feedback."
 
-    template4 = f"{template} You will get the joke, followed with a critique of the joke. You will then finalize the joke and output the final joke. Your goal is to make it as funny as possible."
+    template4 = f"{template} You will get the joke, followed with a critique of the joke. You will then finalize the joke and output the final joke. Your goal is to make it as funny as possible. You output only the joke, no quotes or other text. You make the joke about goverment."
 
     # Creative idea generation
     creative_prompt = ChatPromptTemplate.from_messages([
