@@ -7,14 +7,13 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key')
 joke_type = st.sidebar.text_input('Joke Type')
 
 def generate_response(input_text):
-    if not input_text.endswith('?') and not input_text.endswith('.'):
-        st.warning('Please enter a complete sentence or question for better joke generation.', icon='⚠')
-        return
-
     llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
     joke_prompt = f"Generate a {joke_type.lower()} joke: {input_text}"
     joke_response = llm(joke_prompt)
     st.info(joke_response)
+
+
+
 
 with st.form('my_form'):
     text = st.text_area('Enter keywords or topics for your joke.')
