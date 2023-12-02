@@ -29,10 +29,8 @@ def generate_response(input_text):
     ("human", human_template),
     ])
 
-    chat_prompt.format_messages(joke_type=joke_type, input_text=input_text)
-
     chain = chat_prompt | chat_model
-    respomse = chain.invoke()
+    respomse = chain.invoke({"input_text": input_text, "joke_type": joke_type})
 
     st.info(respomse)
 
