@@ -40,14 +40,14 @@ def generate_response(input_text):
         ("system", template),
         ("human", f"Refine the language of the joke: {creative_output}")
     ])
-    refined_output = refinement_model(refinement_prompt)  # Get refined output
+    refined_output = refinement_model(refinement_prompt.format_prompt(input_text=input_text).to_messages())  # Get refined output
 
     # Critique or sentiment analysis
     criticism_prompt = ChatPromptTemplate.from_messages([
         ("system", template),
         ("human", f"Critique the joke: {refined_output}")
     ])
-    criticized_output = criticism_model(criticism_prompt)  # Get criticized output
+    criticized_output = criticism_model(criticism_prompt.format_prompt(input_text=input_text).to_messages())  # Get criticized output
 
     # Final output
     final_prompt = ChatPromptTemplate.from_messages([
@@ -55,7 +55,7 @@ def generate_response(input_text):
         ("human", f"Finalize the joke: {criticized_output}")
     ])
     
-    final_output = finalization_model(final_prompt)  # Get final output
+    final_output = finalization_model(final_prompt.format_prompt(input_text=input_text).to_messages())  # Get final output
 
     st.info(final_output)
 
