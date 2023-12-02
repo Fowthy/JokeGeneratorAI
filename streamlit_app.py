@@ -26,7 +26,7 @@ def generate_response(input_text):
     criticism_model = ChatOpenAI(openai_api_key=openai_api_key)
     finalization_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    template = "You are an AI that generates jokes. You answer only what you were asked, in short, concrete answers."
+    template = "You are an AI that generates jokes. You answer only what you were asked, in short, concrete answers. You output only the joke, no quotes or other text. You make the joke about goverment."
 
     template2 = f"{template} You analyse the joke and refine it in understandable way."
 
