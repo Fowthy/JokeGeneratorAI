@@ -19,8 +19,7 @@ joke_type = st.sidebar.text_input('Joke Type')
 
 def generate_response(input_text):
     llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    chat_model = ChatOpenAI()
-
+    
     template = "You are an AI that generates {joke_type} jokes."
     human_template = "Generate a joke about {input_text}"
 
