@@ -15,26 +15,49 @@ class ParseOutput(BaseOutputParser[List[str]]):
         return text.strip().split('\n')
 
 
-st.title('Task Planner')
+st.title('Joke Generator')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
 joke_type = st.sidebar.text_input('Joke Type')
 
 def generate_response(input_text):
-    chat_model = ChatOpenAI(openai_api_key=openai_api_key)
+    creative_model = ChatOpenAI(openai_api_key=openai_api_key)
+    refinement_model = ChatOpenAI(openai_api_key=openai_api_key)
+    criticism_model = ChatOpenAI(openai_api_key=openai_api_key)
+    finalization_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    template = "You are an AI that generates {joke_type} jokes."
-    human_template = "Generate a joke about {input_text}"
+    template = "You are an AI that generates jokes."
 
-    chat_prompt = ChatPromptTemplate.from_messages([
-    ("system", template),
-    ("human", human_template),
+    # Creative idea generation
+    creative_prompt = ChatPromptTemplate.from_messages([
+        ("system", template),
+        ("human", f"Generate a creative joke about {input_text}")
     ])
+    creative_output = creative_model(creative_prompt)  # Get creative output
 
-    chain = chat_prompt | chat_model | ParseOutput()
-    respomse = chain.invoke({"input_text": input_text, "joke_type": joke_type})
+    # Language refinement
+    refinement_prompt = ChatPromptTemplate.from_messages([
+        ("system", template),
+        ("human", f"Refine the language of the joke: {creative_output}")
+    ])
+    refined_output = refinement_model(refinement_prompt)  # Get refined output
 
-    st.info(respomse)
+    # Critique or sentiment analysis
+    criticism_prompt = ChatPromptTemplate.from_messages([
+        ("system", template),
+        ("human", f"Critique the joke: {refined_output}")
+    ])
+    criticized_output = criticism_model(criticism_prompt)  # Get criticized output
+
+    # Final output
+    final_prompt = ChatPromptTemplate.from_messages([
+        ("system", template),
+        ("human", f"Finalize the joke: {criticized_output}")
+    ])
+    
+    final_output = finalization_model(final_prompt)  # Get final output
+
+    st.info(final_output)
 
 
 
