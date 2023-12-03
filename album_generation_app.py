@@ -42,7 +42,7 @@ def health_advisor(input_text, vector_store):
     #     "Generate the prompt"
     # )
     # chain_cover = LLMChain(llm=llm, prompt=prompt)
-    image_url = DallEAPIWrapper(openai_api_key=openai_api_key).run("Generate an image following the privacy and policy guidelines, based on the following description: " + input_text)
+    image_url = DallEAPIWrapper(openai_api_key=openai_api_key, size="512x512").run("Generate an album cover image following the privacy and policy guidelines, based on the following description: " + input_text)
 
 
 
