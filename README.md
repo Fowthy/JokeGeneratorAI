@@ -18,7 +18,7 @@ album_generator.py
 
 ![AI Album Generator](assets/1.png)
 
-The AI Album Generator is a Streamlit web application that leverages OpenAI's GPT-3.5 Turbo model to generate custom album themes, cover images, and song lyrics based on only user prompts. The application utilizes a conversational approach, allowing users to interact with the model and shape the creative output of the album.
+The AI Album Generator is an application that uses OpenAI's GPT-3.5 Turbo model to generate custom album themes, cover images, and song lyrics based on only user prompts. The application utilizes a conversational approach, allowing users to interact with the model using single prompt.
 
 ### Features
 
@@ -31,7 +31,8 @@ The AI Album Generator is a Streamlit web application that leverages OpenAI's GP
 mood_analyzer.py
 ![AI Album Generator](assets/2.png)
 
-The Mood Analyzer is a Streamlit application that uses OpenAI's GPT-3.5 Turbo model to generate responses based on user input and analyze the mood of the conversation.
+The Mood Analyzer is an application that uses OpenAI's GPT-3.5 Turbo model to generate responses based on user input and analyze the mood of the conversation.
+
 ### Features
 - **Response Generation**: Users provide text, and the model generates responses.
 - **Mood Analysis**: The model analyzes the mood of the conversation and outputs a mood emoji.
@@ -42,7 +43,8 @@ The Mood Analyzer is a Streamlit application that uses OpenAI's GPT-3.5 Turbo mo
 streamlit_app.py
 ![AI Album Generator](assets/3.png)
 
-The Health and Fitness Advisor is a Streamlit application that utilizes OpenAI's GPT-3.5 Turbo model to provide health and fitness advice based on user input.
+The Health and Fitness Advisor is an application that utilizes OpenAI's GPT-3.5 Turbo model to provide health and fitness advice based on user input. It saves the history of the conversation and uses it to generate more personalized responses.
+
 ### Features
 - **Health Advice Generation**: Users provide their weight, height, age, and goals, and the model generates health advice.
 - **Nutritional Advice (removed in prod)**: The model provides nutritional advice based on the user's goals.
