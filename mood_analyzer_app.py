@@ -39,7 +39,7 @@ def generate_response_and_analyze_mood(input_text):
         *vector_store.get('moodanalyzer_history')
     ])
 
-    vector_store.setdefault('moodanalyzer_history', []).append(f"{input_text}")
+    vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
 
     # Invoke the model chain
     chain = chat_prompt | prompt_model | ParseOutput()
@@ -49,7 +49,7 @@ def generate_response_and_analyze_mood(input_text):
     # The model will output only the emoji, no quotes or other text.
     # The model will output text only when the user's input is concerning and there is something really wrong that must be pointed out.
     chat_mood_prompt = ChatPromptTemplate.from_messages([
-        "You are an AI bot that analyzes the mood of the conversation so far. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out. You output only the emoji, no quotes or other text.",
+        "You are an AI bot that analyzes the mood of the conversation so far. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji and also short analysis on the text. Few bullet points about the most important analysis. More concerning the text is, more explanation you provide.",
         *vector_store.get('moodanalyzer_history')
     ])
 
