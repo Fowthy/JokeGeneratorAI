@@ -48,8 +48,9 @@ def health_advisor(input_text, vector_store):
     chain_songs = chat_prompt_songs | songs_generator_model | ParseOutput()
     response_songs = chain_songs.invoke(vector_store)
 
-
-    st.info(response)
+    st.header('Album Theme')
+    st.info(response, icon='🔥')
+    st.header('Album Songs')
     st.info(response_songs)
 
 
