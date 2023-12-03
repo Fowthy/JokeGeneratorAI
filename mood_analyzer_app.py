@@ -13,7 +13,7 @@ def generate_response_and_analyze_mood(input_text):
     response = prompt_model(response_prompt)
 
     # Model for analyzing mood
-    mood_prompt = f"Analyze the mood of: {input_text}. Use only three colorful emojis to describe the mood. Green, yellow and red."
+    mood_prompt = f"Analyze the mood of: {input_text}. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out."
     mood_analysis = mood_model(mood_prompt)
 
     st.info(response)
