@@ -4,11 +4,11 @@ from langchain.llms import OpenAI
 st.title('🎭 Mood Analyzer')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
-prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-mood_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
 
 def generate_response_and_analyze_mood(input_text):
     
+    prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
+    mood_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
     # Model for generating responses
     vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
     response = prompt_model(vector_store.get('moodanalyzer_history'))
