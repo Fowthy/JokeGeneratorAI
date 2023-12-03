@@ -12,6 +12,9 @@ class ParseOutput(BaseOutputParser[List[str]]):
 st.title('Health and Fitness Advisor')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
+weight_kg = st.sidebar.text_input('Weight in kg')
+height_cm = st.sidebar.text_input('Height in cm')
+age = st.sidebar.text_input('Age')
 
 def health_advisor(input_text, vector_store):
     general_model = ChatOpenAI(openai_api_key=openai_api_key)
@@ -21,7 +24,7 @@ def health_advisor(input_text, vector_store):
     # Construct the chat prompt with vector store information
     chat_prompt = ChatPromptTemplate.from_messages([
         template,
-        f"User's input: {input_text}"
+        f"User's weight in kg: {weight_kg}, User's height in cm: {height_cm}, User's age: {age}, User's goal: {input_text}"
     ])
 
     # Invoke the model chain
@@ -67,17 +70,10 @@ def health_advisor(input_text, vector_store):
     conclude_response = conclude_chain.invoke(vector_store)
 
 
-    # Update vector store with new information
-    vector_store['input_text'] = input_text
-
-
-    vector_store.setdefault('message_history', []).append(f"Model's response: {response}")
-
     st.session_state.meal_vector_store = vector_store
     st.info(conclude_response)
     st.info(nutri_response)
     st.info(recipe_response)
-    st.info("Opalqq, test")
 
 with st.form('fitness_form'):
     text = st.text_area('Enter your body goal.')
