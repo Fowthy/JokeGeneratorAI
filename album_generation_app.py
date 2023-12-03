@@ -42,7 +42,7 @@ def health_advisor(input_text, vector_store):
     #     "Generate the prompt"
     # )
     # chain_cover = LLMChain(llm=llm, prompt=prompt)
-    image_url = DallEAPIWrapper(openai_api_key=openai_api_key).run(response)
+    image_url = DallEAPIWrapper(openai_api_key=openai_api_key).run("Minecraft village")
 
 
 
