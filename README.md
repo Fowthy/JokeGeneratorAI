@@ -9,9 +9,9 @@ This repository contains three AI projects developed as part of a university ass
 - [OpenAI API Key](https://beta.openai.com/signup/)
 
 ### Links to the running applications
-- [AI Album Generator](https://albumgeneratorai-icg3i4ejr7hnezdmoxvxvu.streamlit.app/)
-- [Mood Analyzer](https://moodanalyzerai-8xxgskxskvgnwnwarucsx2.streamlit.app/)
-- [Health and Fitness Advisor](https://jokegeneratorai-b9k8y4kwyttmw5rrdxwwlx.streamlit.app/)
+- [AI Album Generator](https://nlpplayground-cbvh5qm8ksymqcq4ecnjlt.streamlit.app/)
+- [Mood Analyzer](https://nlpplayground-sayfmuzagr9h8yikbebgco.streamlit.app/)
+- [Health and Fitness Advisor](https://nlpplayground-igljhf9cldf6nt3rbtpoja.streamlit.app/)
 
 ## AI Album Generator
 album_generator.py
