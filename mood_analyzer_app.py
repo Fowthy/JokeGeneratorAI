@@ -29,7 +29,9 @@ def generate_response_and_analyze_mood(input_text):
     response = chain.invoke(vector_store)
 
     # Model for analyzing mood
-    mood_prompt = f"Analyze the mood of: {vector_store.get('moodanalyzer_history')}. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out."
+    mood_prompt = f"Analyze the mood of this conversation so far: {vector_store.get('moodanalyzer_history')}. 
+    
+    Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out. You output only the emoji, no quotes or other text."
 
     mood_analysis = mood_model(mood_prompt)
 
