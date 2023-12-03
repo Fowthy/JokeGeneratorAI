@@ -4,6 +4,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema import HumanMessage, BaseOutputParser
 from typing import List
+import os
 
 class ParseOutput(BaseOutputParser[List[str]]):
     def parse(self, text: str) -> List[str]:
@@ -11,13 +12,12 @@ class ParseOutput(BaseOutputParser[List[str]]):
 
 st.title('Health and Fitness Advisor')
 
-openai_api_key = st.sidebar.text_input('OpenAI API Key')
 weight_kg = st.sidebar.text_input('Weight in kg')
 height_cm = st.sidebar.text_input('Height in cm')
 age = st.sidebar.text_input('Age')
 
 def health_advisor(input_text, vector_store):
-    general_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='gpt-3.5-turbo-1106')
+    general_model = ChatOpenAI(openai_api_key=os.environ['OPENAI_API_KEY'], temperature=0.2, model='gpt-3.5-turbo-1106')
 
     template = "You are an AI health and fitness advisor. You don't stop asking questions until you have all the information you need to answer with maximum accuracy based on the person's features."
 
@@ -85,44 +85,7 @@ with st.form('fitness_form'):
     # Initialize or retrieve vector store
     vector_store = st.session_state.get('health_vector_store', {})
 
-    if submitted and openai_api_key.startswith('sk-'):
+    if submitted and os.environ['OPENAI_API_KEY'].startswith('sk-'):
         health_advisor(text, vector_store)
         # Update the vector store for future conversations
         st.session_state.health_vector_store = vector_store
-    elif not openai_api_key.startswith('sk-'):
-        st.warning('Please enter your OpenAI API key!', icon='⚠')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#    vector_store.setdefault('message_history', []).append(f"User's input: {input_text}")
-
-#     # Construct the chat prompt with vector store information
-#     chat_prompt = ChatPromptTemplate.from_messages([
-#         template,
-#         *vector_store.get('message_history')
-#     ])
-
-#     # Update vector store with new information
-#     vector_store['input_text'] = input_text
-
-#     # Invoke the model chain
-#     chain = chat_prompt | chat_model | ParseOutput()
-#     response = chain.invoke(vector_store)
-
-#     vector_store.setdefault('message_history', []).append(f"Model's response: {response}")
-
-#     st.session_state.meal_vector_store = vector_store

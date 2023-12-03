@@ -9,6 +9,7 @@ from langchain.llms import OpenAI
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema import HumanMessage, BaseOutputParser
 from typing import List
+import os
 
 
 # Define a class for parsing the output
@@ -17,9 +18,6 @@ class ParseOutput(BaseOutputParser[List[str]]):
         return text
 
 st.title('🎭 Mood Analyzer')
-
-openai_api_key = st.sidebar.text_input('OpenAI API Key')
-
 
 # Define a function to generate responses and analyze mood
 # The function accepts only the input text and outputs the chatbot response and the mood analysis.
@@ -33,8 +31,8 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key')
 def generate_response_and_analyze_mood(input_text):
     
     # Define the model that will generate the response based on the user prompt and the mood analysis
-    prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key, model='gpt-3.5-turbo-1106')
-    mood_model = OpenAI(temperature=0.3, openai_api_key=openai_api_key, model='gpt-3.5-turbo-1106')
+    prompt_model = OpenAI(temperature=0.7, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
+    mood_model = OpenAI(temperature=0.3, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
     
     chat_prompt = ChatPromptTemplate.from_messages([
         "You are an AI bot that responds to human text and nothing else. You just respond with text or question.",
@@ -79,8 +77,5 @@ with st.form('my_form'):
     # Clean the vector store on new session
     vector_store['moodanalyzer_history'] = []
 
-    if not openai_api_key.startswith('sk-'):
-        st.warning('Please enter your OpenAI API key!', icon='⚠')
-
-    if submitted and openai_api_key.startswith('sk-'):
+    if submitted and os.environ['OPENAI_API_KEY'].startswith('sk-'):
         generate_response_and_analyze_mood(text)
