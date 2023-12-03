@@ -13,13 +13,11 @@ def generate_response_and_analyze_mood(input_text):
     response = prompt_model(response_prompt)
 
     # Model for analyzing mood
-    mood_prompt = f"Analyze the mood of: {input_text}"
+    mood_prompt = f"Analyze the mood of: {input_text}. Use only three colorful emojis to describe the mood. Green, yellow and red."
     mood_analysis = mood_model(mood_prompt)
 
-    st.info("Generated Response:")
     st.info(response)
 
-    st.info("Mood Analysis:")
     st.info(mood_analysis)
 
 with st.form('my_form'):
