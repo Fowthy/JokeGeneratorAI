@@ -16,7 +16,7 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key')
 def health_advisor(input_text, vector_store):
     chat_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    template = "You are an AI health and fitness advisor. You answer with short, concrete answers. You provide health and fitness advice based on the user's goals, progress, and preferences."
+    template = "You are an AI health and fitness advisor. You answer with short, concrete answers, not general answers. You provide health and fitness advice based on the user's goals, progress, and preferences."
 
     vector_store.setdefault('message_history', []).append(f"User's input: {input_text}")
 
@@ -42,7 +42,7 @@ def health_advisor(input_text, vector_store):
     response = chain.invoke(vector_store)
 
     vector_store.setdefault('message_history', []).append(f"Model's response: {response}")
-    
+
     st.session_state.meal_vector_store = vector_store
     st.info(response)
 
