@@ -16,7 +16,7 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key')
 def health_advisor(input_text, vector_store):
     chat_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    template = "You are an AI health and fitness advisor."
+    template = "You are an AI health and fitness advisor. You answer with short, concrete answers. You provide health and fitness advice based on the user's goals, progress, and preferences."
 
     # Construct the chat prompt with vector store information
     chat_prompt = ChatPromptTemplate.from_messages([
