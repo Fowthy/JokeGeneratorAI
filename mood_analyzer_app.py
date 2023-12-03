@@ -1,11 +1,11 @@
 import streamlit as st
-from langchain.llms import OpenAI, GPT3
+from langchain.llms import OpenAI
 
 st.title('🎭 Mood Analyzer')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
 prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-mood_model = GPT3(temperature=0.7, openai_api_key=openai_api_key)
+mood_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
 
 def generate_response_and_analyze_mood(input_text):
     # Model for generating responses
