@@ -16,13 +16,13 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key')
 def health_advisor(input_text, vector_store):
     chat_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    template = "You are an AI health and fitness advisor. You answer with short, concrete answers, not general answers, up to 5 sentences. You give concrete numbers based on user's features (height, weight, age, etc.)"
+    template = "You are an AI health and fitness advisor. You answer with short, concrete answers, not general answers. You give concrete numbers based on user's features (height, weight, age, etc.)"
 
     vector_store.setdefault('message_history', []).append(f"User's input: {input_text}")
 
     # Construct the chat prompt with vector store information
     chat_prompt = ChatPromptTemplate.from_messages([
-        HumanMessage(content=template),
+        template,
         *vector_store.get('message_history')
     ])
 
@@ -44,7 +44,7 @@ def health_advisor(input_text, vector_store):
     vector_store.setdefault('message_history', []).append(f"Model's response: {response}")
 
     st.session_state.meal_vector_store = vector_store
-    # st.info(response)
+    st.info(response)
 
 with st.form('fitness_form'):
     text = st.text_area('Enter your health and fitness query.')
@@ -53,9 +53,9 @@ with st.form('fitness_form'):
     # Initialize or retrieve vector store
     vector_store = st.session_state.get('health_vector_store', {})
 
+    vector_store['message_history'] = []
     if submitted and openai_api_key.startswith('sk-'):
         health_advisor(text, vector_store)
-        st.info(vector_store['message_history'])
         # Update the vector store for future conversations
         st.session_state.health_vector_store = vector_store
     elif not openai_api_key.startswith('sk-'):
