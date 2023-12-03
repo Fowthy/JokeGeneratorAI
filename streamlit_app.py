@@ -55,7 +55,7 @@ with st.form('fitness_form'):
 
     if submitted and openai_api_key.startswith('sk-'):
         health_advisor(text, vector_store)
-        st.info(vector_store['message_history'][-1])
+        st.info(vector_store['message_history'])
         # Update the vector store for future conversations
         st.session_state.health_vector_store = vector_store
     elif not openai_api_key.startswith('sk-'):
