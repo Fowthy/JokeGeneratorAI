@@ -5,7 +5,7 @@
 ######################################################################
 
 import streamlit as st
-from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema import HumanMessage, BaseOutputParser
 from typing import List
@@ -31,8 +31,8 @@ st.title('🎭 Mood Analyzer')
 def generate_response_and_analyze_mood(input_text):
     
     # Define the model that will generate the response based on the user prompt and the mood analysis
-    prompt_model = OpenAI(temperature=0.7, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
-    mood_model = OpenAI(temperature=0.3, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
+    prompt_model = ChatOpenAI(temperature=0.7, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
+    mood_model = ChatOpenAI(temperature=0.3, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
     
     chat_prompt = ChatPromptTemplate.from_messages([
         "You are an AI bot that responds to human text and nothing else. You just respond with text or question.",
