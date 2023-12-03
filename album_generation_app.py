@@ -39,7 +39,7 @@ def health_advisor(input_text, vector_store):
     llm = OpenAI(temperature=0.9, openai_api_key=openai_api_key)
     prompt = PromptTemplate(
         f"Generate a detailed prompt to generate an image based on the following description: {response}",
-        
+        "Generate the prompt"
     )
     chain_cover = LLMChain(llm=llm, prompt=prompt)
     image_url = DallEAPIWrapper().run(chain_cover.run("halloween night at a haunted museum"))
