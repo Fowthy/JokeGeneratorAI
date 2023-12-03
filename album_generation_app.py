@@ -32,8 +32,6 @@ def health_advisor(input_text, vector_store):
     chain = chat_prompt | theme_generator_model | ParseOutput()
     response = chain.invoke(vector_store)
 
-    st.info(response)
-
     songs_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.8, model='gpt-3.5-turbo-instruct')
 
     template_songs = f"You are an AI songs generator. You generate songs based on the album theme. You generate the lyrics only based on the album theme: {response}."
@@ -47,11 +45,13 @@ def health_advisor(input_text, vector_store):
 
     vector_store.setdefault('album_generator_history', []).append(f"User's prompt is {input_text}")
     # Invoke the model chain
-    chain = chat_prompt_songs | songs_generator_model | ParseOutput()
-    response = chain.invoke(vector_store)
+    chain_songs = chat_prompt_songs | songs_generator_model | ParseOutput()
+    response_songs = chain_songs.invoke(vector_store)
 
 
-    
+    st.info(response)
+    st.info(response_songs)
+
 
 with st.form('album_form'):
     text = st.text_area('Enter your prompt for your album.')
