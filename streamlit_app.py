@@ -17,9 +17,9 @@ height_cm = st.sidebar.text_input('Height in cm')
 age = st.sidebar.text_input('Age')
 
 def health_advisor(input_text, vector_store):
-    general_model = ChatOpenAI(openai_api_key=openai_api_key)
+    general_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='gpt-3.5-turbo-1106')
 
-    template = "You are an AI health and fitness advisor. You answer with short, concrete answers, not general answers. You generalize the user's input and you create concrete goal for the user. You don't stop asking questions until you have all the information you need to answer with maximum accuracy based on the person's features."
+    template = "You are an AI health and fitness advisor. You don't stop asking questions until you have all the information you need to answer with maximum accuracy based on the person's features."
 
     vector_store.setdefault('user_goal', []).append(f"User's weight in kg: {weight_kg}, User's height in cm: {height_cm}, User's age: {age}, User's goal: {input_text}")
 
