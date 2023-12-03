@@ -50,7 +50,7 @@ def health_advisor(input_text, vector_store):
     recipe_chain = recipe_chat_prompt | recipe_model | ParseOutput()
     recipe_response = recipe_chain.invoke(vector_store)
 
-    combined = response + nutri_response + recipe_chat_prompt
+    combined = response + nutri_response + recipe_response
 
     conclude_model = ChatOpenAI(openai_api_key=openai_api_key)
 
