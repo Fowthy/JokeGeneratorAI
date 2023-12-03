@@ -34,12 +34,13 @@ def generate_response_and_analyze_mood(input_text):
     prompt_model = ChatOpenAI(temperature=0.7, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
     mood_model = ChatOpenAI(temperature=0.3, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
     
+    vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
+    
     chat_prompt = ChatPromptTemplate.from_messages([
         "You are an AI bot that responds to human text and nothing else. You just respond with text or question.",
         *vector_store.get('moodanalyzer_history')
     ])
 
-    vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
 
     # Invoke the model chain
     chain = chat_prompt | prompt_model | ParseOutput()
