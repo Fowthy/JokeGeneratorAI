@@ -20,17 +20,17 @@ def health_advisor(input_text, vector_store):
 
     # Construct the chat prompt with vector store information
     chat_prompt = ChatPromptTemplate.from_messages([
-        HumanMessage(text=template),
-        HumanMessage(text=f"Provide health and fitness advice based on: {input_text}")
+        HumanMessage(content=template),
+        HumanMessage(content=f"Provide health and fitness advice based on: {input_text}")
     ])
 
     # Access vector store information
     if 'user_goals' in vector_store:
-        chat_prompt.add_message(HumanMessage(text=f"User's goals: {vector_store['user_goals']}"))
+        chat_prompt.add_message(HumanMessage(content=f"User's goals: {vector_store['user_goals']}"))
     if 'user_progress' in vector_store:
-        chat_prompt.add_message(HumanMessage(text=f"User's progress: {vector_store['user_progress']}"))
+        chat_prompt.add_message(HumanMessage(content=f"User's progress: {vector_store['user_progress']}"))
     if 'user_preferences' in vector_store:
-        chat_prompt.add_message(HumanMessage(text=f"User's preferences: {vector_store['user_preferences']}"))
+        chat_prompt.add_message(HumanMessage(content=f"User's preferences: {vector_store['user_preferences']}"))
 
     # Update vector store with new information
     vector_store['input_text'] = input_text
