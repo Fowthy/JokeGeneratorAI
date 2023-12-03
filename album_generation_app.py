@@ -19,7 +19,6 @@ class ParseOutput(BaseOutputParser[List[str]]):
 st.title('Album Generator')
 
 # Define sidebar variables
-openai_api_key = st.sidebar.text_input('OpenAI API Key')
 songs_number = st.sidebar.slider('How many songs?', 0, 8, 2)
 
 
