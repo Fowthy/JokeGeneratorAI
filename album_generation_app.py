@@ -37,7 +37,7 @@ def health_advisor(input_text, vector_store):
     # Define the model that will generate the theme based on the user prompt
     # I'm using the gpt-3.5-turbo-1106 model, as it is the best available model for generating text (and cheap also)
     # the temperature of the model is controlled from the sidebar slider
-    theme_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=temperature/10, model='gpt-3.5-turbo-1106')
+    theme_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.8, model='gpt-3.5-turbo-1106')
     template = "You are an AI album generator. You generate an album theme based on the user prompt. This theme will be used for generating the album cover image and the album name, and will influence the lyrics."
     vector_store.setdefault('album_generator_history', []).append(f"User's prompt is {input_text}")
 
