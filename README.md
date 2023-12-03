@@ -14,6 +14,7 @@ This repository contains three AI projects developed as part of a university ass
 - [Health and Fitness Advisor](https://jokegeneratorai-b9k8y4kwyttmw5rrdxwwlx.streamlit.app/)
 
 ## AI Album Generator
+album_generator.py
 
 ![AI Album Generator](assets/1.png)
 
@@ -27,6 +28,7 @@ The AI Album Generator is a Streamlit web application that leverages OpenAI's GP
 
 
 ## 2. Mood Analyzer
+mood_analyzer.py
 ![AI Album Generator](assets/2.png)
 
 The Mood Analyzer is a Streamlit application that uses OpenAI's GPT-3.5 Turbo model to generate responses based on user input and analyze the mood of the conversation.
@@ -37,6 +39,7 @@ The Mood Analyzer is a Streamlit application that uses OpenAI's GPT-3.5 Turbo mo
 
 
 ## 3. Health and Fitness Advisor
+streamlit_app.py
 ![AI Album Generator](assets/3.png)
 
 The Health and Fitness Advisor is a Streamlit application that utilizes OpenAI's GPT-3.5 Turbo model to provide health and fitness advice based on user input.
