@@ -1,9 +1,17 @@
+######################################################################
+#                                                                    #
+#                AI Mood Analyzer from user input                    #
+#                                                                    #
+######################################################################
+
 import streamlit as st
 from langchain.llms import OpenAI
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema import HumanMessage, BaseOutputParser
 from typing import List
 
+
+# Define a class for parsing the output
 class ParseOutput(BaseOutputParser[List[str]]):
     def parse(self, text: str) -> List[str]:
         return text
@@ -12,23 +20,36 @@ st.title('🎭 Mood Analyzer')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
 
+
+# Define a function to generate responses and analyze mood
+# The function accepts only the input text and outputs the chatbot response and the mood analysis.
+# It also uses the vector store to store information about the conversation, therefore as long as the session storage is not cleared, the conversation will continue from where it was left off.
+
+# The flow of the model is the following:
+# 1. The user enters a prompt for the chatbot
+# 2. The model generates a response based on the user prompt
+# 3. The model analyzes the mood of the conversation so far
+# 4. The model outputs the response and the mood analysis
 def generate_response_and_analyze_mood(input_text):
     
+    # Define the model that will generate the response based on the user prompt and the mood analysis
     prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key, model='gpt-3.5-turbo-1106')
     mood_model = OpenAI(temperature=0.3, openai_api_key=openai_api_key, model='gpt-3.5-turbo-1106')
-    # Model for generating responses
-    vector_store.setdefault('moodanalyzer_history', []).append(f"{input_text}")
-
+    
     chat_prompt = ChatPromptTemplate.from_messages([
         "You are an AI bot that responds to human text and nothing else. You just respond with text or question.",
         *vector_store.get('moodanalyzer_history')
     ])
 
+    vector_store.setdefault('moodanalyzer_history', []).append(f"{input_text}")
+
     # Invoke the model chain
     chain = chat_prompt | prompt_model | ParseOutput()
     response = chain.invoke(vector_store)
 
-
+    # Define the template for the model that will analyze the mood of the conversation so far. It uses the whole conversation as input.
+    # The model will output only the emoji, no quotes or other text.
+    # The model will output text only when the user's input is concerning and there is something really wrong that must be pointed out.
     chat_mood_prompt = ChatPromptTemplate.from_messages([
         "You are an AI bot that analyzes the mood of the conversation so far. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out. You output only the emoji, no quotes or other text.",
         *vector_store.get('moodanalyzer_history')
@@ -39,10 +60,12 @@ def generate_response_and_analyze_mood(input_text):
     chain_mood = chat_mood_prompt | mood_model | ParseOutput()
     mood_analysis = chain_mood.invoke(vector_store)
 
-
+    # Output the response and the mood analysis to streamlit
     st.info(response)
-
+    st.header('Mood Analysis')
     st.info(mood_analysis)
+
+    # Update the vector_store for future interactions
     vector_store.setdefault('moodanalyzer_history', []).append(f"Model's output: {response}. Mood Analysis: {mood_analysis}. ")
 
         # Update the vector_store for future interactions
@@ -53,6 +76,7 @@ with st.form('my_form'):
     submitted = st.form_submit_button('Submit')
     vector_store = st.session_state.get('moodanalyzer_store', {})
 
+    # Clean the vector store on new session
     vector_store['moodanalyzer_history'] = []
 
     if not openai_api_key.startswith('sk-'):
