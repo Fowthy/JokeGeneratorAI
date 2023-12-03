@@ -1,5 +1,12 @@
 import streamlit as st
 from langchain.llms import OpenAI
+from langchain.prompts.chat import ChatPromptTemplate
+from langchain.schema import HumanMessage, BaseOutputParser
+from typing import List
+
+class ParseOutput(BaseOutputParser[List[str]]):
+    def parse(self, text: str) -> List[str]:
+        return text
 
 st.title('🎭 Mood Analyzer')
 
@@ -11,10 +18,19 @@ def generate_response_and_analyze_mood(input_text):
     mood_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
     # Model for generating responses
     vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
-    response = prompt_model(vector_store.get('moodanalyzer_history'))
+
+    chat_prompt = ChatPromptTemplate.from_messages([
+        "You answer questions.",
+        *vector_store.get('moodanalyzer_history')
+    ])
+
+    # Invoke the model chain
+    chain = chat_prompt | prompt_model | ParseOutput()
+    response = chain.invoke(vector_store)
 
     # Model for analyzing mood
     mood_prompt = f"Analyze the mood of: {input_text}. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out."
+    
     mood_analysis = mood_model(mood_prompt)
 
 
