@@ -66,6 +66,8 @@ def health_advisor(input_text, vector_store):
     st.header('Album Theme')
     st.info(response, icon='🔥')
     st.header('Album Songs')
+
+    st.slider('Select a song', 0, len(response_songs), 0)
     st.info(response_songs)
 
 
