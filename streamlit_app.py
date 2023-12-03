@@ -9,48 +9,45 @@ class ParseOutput(BaseOutputParser[List[str]]):
     def parse(self, text: str) -> List[str]:
         return text.strip().split('\n')
 
-st.title('Health and Fitness Advisor')
+st.title('Meal Planner and Tracker')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
 
-def health_advisor(input_text, vector_store):
+def meal_planner(input_text, vector_store):
     chat_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    template = "You are an AI health and fitness advisor. You answer with short, concrete answers. You provide health and fitness advice based on the user's goals, progress, and preferences."
+    template = "You are an AI meal planner and tracker."
 
-    # Construct the chat prompt with vector store information
     chat_prompt = ChatPromptTemplate.from_messages([
         HumanMessage(content=template),
-        HumanMessage(content=f"Provide health and fitness advice based on: {input_text}")
+        HumanMessage(content=f"User's input: {input_text}")
     ])
 
-    # Access vector store information
-    if 'user_goals' in vector_store:
-        chat_prompt.add_message(HumanMessage(content=f"User's goals: {vector_store['user_goals']}"))
-    if 'user_progress' in vector_store:
-        chat_prompt.add_message(HumanMessage(content=f"User's progress: {vector_store['user_progress']}"))
-    if 'user_preferences' in vector_store:
-        chat_prompt.add_message(HumanMessage(content=f"User's preferences: {vector_store['user_preferences']}"))
+    # Access vector store information (history)
+    if 'meal_plan' in vector_store:
+        chat_prompt.add_message(HumanMessage(content=f"User's meal plan: {vector_store['meal_plan']}"))
+    if 'foods_eaten' in vector_store:
+        chat_prompt.add_message(HumanMessage(content=f"Foods eaten: {vector_store['foods_eaten']}"))
+    if 'remaining_foods' in vector_store:
+        chat_prompt.add_message(HumanMessage(content=f"Remaining foods: {vector_store['remaining_foods']}"))
 
-    # Update vector store with new information
     vector_store['input_text'] = input_text
 
-    # Invoke the model chain
     chain = chat_prompt | chat_model | ParseOutput()
     response = chain.invoke(vector_store)
 
+    st.session_state.meal_vector_store = vector_store
+
     st.info(response)
 
-with st.form('fitness_form'):
-    text = st.text_area('Enter your health and fitness query.')
+with st.form('meal_form'):
+    text = st.text_area('Enter your meal-related query.')
     submitted = st.form_submit_button('Submit')
 
-    # Initialize or retrieve vector store
-    vector_store = st.session_state.get('health_vector_store', {})
+    # Initialize or retrieve vector store (history)
+    vector_store = st.session_state.get('meal_vector_store', {})
 
     if submitted and openai_api_key.startswith('sk-'):
-        health_advisor(text, vector_store)
-        # Update the vector store for future conversations
-        st.session_state.health_vector_store = vector_store
+        meal_planner(text, vector_store)
     elif not openai_api_key.startswith('sk-'):
         st.warning('Please enter your OpenAI API key!', icon='⚠')
