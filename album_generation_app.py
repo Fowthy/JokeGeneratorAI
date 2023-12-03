@@ -36,7 +36,7 @@ def health_advisor(input_text, vector_store):
     chain = chat_prompt | theme_generator_model | ParseOutput()
     response = chain.invoke(vector_store)
 
-    llm = OpenAI(temperature=0.9)
+    llm = OpenAI(temperature=0.9, openai_api_key=openai_api_key)
     prompt = PromptTemplate(
         input_variables={'album_theme': response},
         template=f"Generate a detailed prompt to generate an image based on the following description: {response}",
