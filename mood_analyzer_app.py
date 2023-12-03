@@ -38,6 +38,10 @@ def generate_response_and_analyze_mood(input_text):
     st.info(response)
 
     st.info(mood_analysis)
+    vector_store.setdefault('moodanalyzer_history', []).append(f"Model's output: {response}. Mood Analysis: {mood_analysis}. ")
+
+        # Update the vector_store for future interactions
+    st.session_state.moodanalyzer_store = vector_store
 
 with st.form('my_form'):
     text = st.text_area('Enter text:')
@@ -49,5 +53,4 @@ with st.form('my_form'):
         st.warning('Please enter your OpenAI API key!', icon='⚠')
 
     if submitted and openai_api_key.startswith('sk-'):
-        st.session_state.moodanalyzer_store = vector_store
         generate_response_and_analyze_mood(text)
