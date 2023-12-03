@@ -26,14 +26,6 @@ def health_advisor(input_text, vector_store):
         *vector_store.get('message_history')
     ])
 
-    # Access vector store information
-    # if 'user_goals' in vector_store:
-    #     chat_prompt.add_message(HumanMessage(content=f"User's goals: {vector_store['user_goals']}"))
-    # if 'user_progress' in vector_store:
-    #     chat_prompt.add_message(HumanMessage(content=f"User's progress: {vector_store['user_progress']}"))
-    # if 'user_preferences' in vector_store:
-    #     chat_prompt.add_message(HumanMessage(content=f"User's preferences: {vector_store['user_preferences']}"))
-
     # Update vector store with new information
     vector_store['input_text'] = input_text
 
@@ -45,6 +37,7 @@ def health_advisor(input_text, vector_store):
 
     st.session_state.meal_vector_store = vector_store
     st.info(response)
+    st.info("Opalqq, test")
 
 with st.form('fitness_form'):
     text = st.text_area('Enter your health and fitness query.')
