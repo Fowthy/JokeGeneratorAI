@@ -85,7 +85,10 @@ with st.form('fitness_form'):
     # Initialize or retrieve vector store
     vector_store = st.session_state.get('health_vector_store', {})
 
-    vector_store['message_history'] = []
+    text = st.text_area('Enter your body goal.')
+    submitted = st.form_submit_button('Submit')
+
+
     if submitted and openai_api_key.startswith('sk-'):
         health_advisor(text, vector_store)
         # Update the vector store for future conversations
