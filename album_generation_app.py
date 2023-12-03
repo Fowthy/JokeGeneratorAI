@@ -32,7 +32,7 @@ def health_advisor(input_text, vector_store):
     chain = chat_prompt | theme_generator_model | ParseOutput()
     response = chain.invoke(vector_store)
 
-    album_cover_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='dall-e-2')
+    album_cover_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='dall-e-3')
 
     template_cover = f"You are an AI album cover generator. You generate an album cover based on the album theme. You generate the album cover only based on the album theme: {response}."
     chat_prompt_cover = ChatPromptTemplate.from_messages([
