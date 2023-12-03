@@ -12,8 +12,6 @@ from typing import List
 from langchain.utilities.dalle_image_generator import DallEAPIWrapper
 import os
 
-print(os.environ['OPENAI_API_KEY'])
-
 class ParseOutput(BaseOutputParser[List[str]]):
     def parse(self, text: str) -> List[str]:
         return text
@@ -100,12 +98,11 @@ with st.form('album_form'):
     # Initialize or retrieve vector store
     vector_store = st.session_state.get('album_generator_store', {})
 
-    if submitted and openai_api_key.startswith('sk-'):
+    if submitted and os.environ['OPENAI_API_KEY'].startswith('sk-'):
         health_advisor(text, vector_store)
         # Update the vector store for future conversations
         st.session_state.album_generator_store = vector_store
-    elif not openai_api_key.startswith('sk-'):
-        st.warning('Please enter your OpenAI API key!', icon='⚠')
+
 
 
 
