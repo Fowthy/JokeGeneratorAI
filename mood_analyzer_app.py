@@ -17,7 +17,7 @@ def generate_response_and_analyze_mood(input_text):
     prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
     mood_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
     # Model for generating responses
-    vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
+    vector_store.setdefault('moodanalyzer_history', []).append(f"{input_text}")
 
     chat_prompt = ChatPromptTemplate.from_messages([
         "You are an AI bot that responds to human text and nothing else. You just respond with text or question.",
