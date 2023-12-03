@@ -26,7 +26,7 @@ def health_advisor(input_text, vector_store):
     # Construct the chat prompt with vector store information
     chat_prompt = ChatPromptTemplate.from_messages([
         template,
-        vector_store.get('user_goal')
+        *vector_store.get('user_goal')
     ])
 
     # Invoke the model chain
