@@ -20,8 +20,7 @@ st.title('Album Generator')
 
 # Define sidebar variables
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
-songs_number = st.sidebar.text_input('How many songs?')
-temperature = st.sidebar.slider('Select a song', 0, 8, 3)
+songs_number = st.sidebar.slider('How many songs?', 0, 8, 2)
 
 
 # Define the health advisor function. It accepts only the input text and outputs all necessary information about an album cover (Name, Theme, Image and lyrics)
