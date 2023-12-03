@@ -32,6 +32,17 @@ def health_advisor(input_text, vector_store):
     chain = chat_prompt | theme_generator_model | ParseOutput()
     response = chain.invoke(vector_store)
 
+    album_cover_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='dall-e-2')
+
+    template_cover = f"You are an AI album cover generator. You generate an album cover based on the album theme. You generate the album cover only based on the album theme: {response}."
+    chat_prompt_cover = ChatPromptTemplate.from_messages([
+        template_cover,
+        f"Generate an album cover."
+    ])
+
+    chain_cover = chat_prompt_cover | album_cover_model | ParseOutput()
+    response_cover = chain_cover.invoke(vector_store)
+
     songs_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.8, model='gpt-3.5-turbo-1106')
 
     template_songs = f"You are an AI songs generator. You generate songs based on the album theme. You generate the lyrics only based on the album theme: {response}."
@@ -48,6 +59,7 @@ def health_advisor(input_text, vector_store):
     chain_songs = chat_prompt_songs | songs_generator_model | ParseOutput()
     response_songs = chain_songs.invoke(vector_store)
 
+    st.image(response_cover)
     st.header('Album Theme')
     st.info(response, icon='🔥')
     st.header('Album Songs')
