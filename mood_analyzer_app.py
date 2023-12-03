@@ -37,7 +37,7 @@ def generate_response_and_analyze_mood(input_text):
     # Model for analyzing mood
 
     chain_mood = chat_mood_prompt | mood_model | ParseOutput()
-    mood_analysis = chain.invoke(vector_store)
+    mood_analysis = chain_mood.invoke(vector_store)
 
 
     st.info(response)
