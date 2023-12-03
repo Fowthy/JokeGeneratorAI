@@ -42,14 +42,29 @@ def health_advisor(input_text, vector_store):
 
     recipe_model = ChatOpenAI(openai_api_key=openai_api_key)
 
-    recipe_template = "You are an AI chef. Based on the user's goal, provide specific recipes of what he should eat and what he should not eat. You must use the nutritional advice from the previous model. You must write short and concrete list with quick foods that the user can eat to achieve his goal."
+    recipe_template = "You are an AI chef. Based on the user's goal, provide specific recipes of what he should eat and what he should not eat. You must use the nutritional advice from the previous model. You must write short and concrete list with quick foods that the user can eat to achieve his goal, nothing else. Only the list."
     recipe_chat_prompt = ChatPromptTemplate.from_messages([
         recipe_template,
         f"Nutritional AI model response: {nutri_response}"
     ])
-
     recipe_chain = recipe_chat_prompt | recipe_model | ParseOutput()
     recipe_response = recipe_chain.invoke(vector_store)
+
+    combined = response | nutri_response | recipe_chat_prompt
+
+    conclude_model = ChatOpenAI(openai_api_key=openai_api_key)
+
+    conclude_template = "You are an AI health and fitness advisor. You answer with short, concrete answers, not general answers. You must take the response from the previous models and give concrete advice to the user with 2-3 sentences."
+
+    # Construct the chat prompt with vector store information
+    conclude_prompt = ChatPromptTemplate.from_messages([
+        f"{conclude_template} Model response: {combined}",
+        f"User's input: {input_text}"
+    ])
+
+
+    conclude_chain = conclude_prompt | conclude_model | ParseOutput()
+    conclude_response = conclude_chain.invoke(vector_store)
 
 
     # Update vector store with new information
@@ -59,7 +74,7 @@ def health_advisor(input_text, vector_store):
     vector_store.setdefault('message_history', []).append(f"Model's response: {response}")
 
     st.session_state.meal_vector_store = vector_store
-    st.info(response)
+    st.info(conclude_response)
     st.info(nutri_response)
     st.info(recipe_response)
     st.info("Opalqq, test")
