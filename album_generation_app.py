@@ -17,10 +17,12 @@ st.title('Album Generator')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
 songs_number = st.sidebar.text_input('How many songs?')
+temperature = st.sidebar.slider('Select a song', 0, 8, 3)
+
 
 
 def health_advisor(input_text, vector_store):
-    theme_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='gpt-3.5-turbo-1106')
+    theme_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=temperature, model='gpt-3.5-turbo-1106')
 
     template = "You are an AI album generator. You generate an album theme based on the user prompt. This theme will be used for generating the album cover image and the album name, and will influence the lyrics."
 
@@ -67,12 +69,12 @@ def health_advisor(input_text, vector_store):
     st.info(response, icon='🔥')
     st.header('Album Songs')
 
-    st.slider('Select a song', 0, len(response_songs), 0)
     st.info(response_songs)
 
 
 with st.form('album_form'):
     text = st.text_area('Enter your prompt for your album.')
+
     submitted = st.form_submit_button('Submit')
 
     # Initialize or retrieve vector store
