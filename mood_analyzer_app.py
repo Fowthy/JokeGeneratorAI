@@ -20,7 +20,7 @@ def generate_response_and_analyze_mood(input_text):
     vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
 
     chat_prompt = ChatPromptTemplate.from_messages([
-        "You answer questions.",
+        "You are an AI bot that responds to human text and nothing else. You just respond with text or question.",
         *vector_store.get('moodanalyzer_history')
     ])
 
@@ -29,7 +29,7 @@ def generate_response_and_analyze_mood(input_text):
     response = chain.invoke(vector_store)
 
     # Model for analyzing mood
-    mood_prompt = f"Analyze the mood of: {input_text}. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out."
+    mood_prompt = f"Analyze the mood of: {vector_store.get('moodanalyzer_history')}. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out."
 
     mood_analysis = mood_model(mood_prompt)
 
