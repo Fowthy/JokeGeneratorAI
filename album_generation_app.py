@@ -16,7 +16,7 @@ songs_number = st.sidebar.text_input('How many songs?')
 
 
 def health_advisor(input_text, vector_store):
-    theme_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='gpt-3.5-turbo-instruct')
+    theme_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model='gpt-3.5-turbo-1106')
 
     template = "You are an AI album generator. You generate an album theme based on the user prompt. This theme will be used for generating the album cover image and the album name, and will influence the lyrics."
 
@@ -32,7 +32,7 @@ def health_advisor(input_text, vector_store):
     chain = chat_prompt | theme_generator_model | ParseOutput()
     response = chain.invoke(vector_store)
 
-    songs_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.8, model='gpt-3.5-turbo-instruct')
+    songs_generator_model = ChatOpenAI(openai_api_key=openai_api_key, temperature=0.8, model='gpt-3.5-turbo-1106')
 
     template_songs = f"You are an AI songs generator. You generate songs based on the album theme. You generate the lyrics only based on the album theme: {response}."
 

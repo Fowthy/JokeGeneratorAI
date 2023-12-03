@@ -14,8 +14,8 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key')
 
 def generate_response_and_analyze_mood(input_text):
     
-    prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key, model='gpt-3.5-turbo-instruct')
-    mood_model = OpenAI(temperature=0.3, openai_api_key=openai_api_key, model='gpt-3.5-turbo-instruct')
+    prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key, model='gpt-3.5-turbo-1106')
+    mood_model = OpenAI(temperature=0.3, openai_api_key=openai_api_key, model='gpt-3.5-turbo-1106')
     # Model for generating responses
     vector_store.setdefault('moodanalyzer_history', []).append(f"{input_text}")
 
