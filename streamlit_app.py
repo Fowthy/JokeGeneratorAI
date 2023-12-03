@@ -53,6 +53,7 @@ with st.form('fitness_form'):
     # Initialize or retrieve vector store
     vector_store = st.session_state.get('health_vector_store', {})
 
+    vector_store['message_history'] = []
     if submitted and openai_api_key.startswith('sk-'):
         health_advisor(text, vector_store)
         st.info(vector_store['message_history'])
