@@ -14,8 +14,8 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key')
 
 def generate_response_and_analyze_mood(input_text):
     
-    prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    mood_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
+    prompt_model = OpenAI(temperature=0.7, openai_api_key=openai_api_key, model='gpt-3.5')
+    mood_model = OpenAI(temperature=0.3, openai_api_key=openai_api_key, model='gpt-3.5-turbo-1106')
     # Model for generating responses
     vector_store.setdefault('moodanalyzer_history', []).append(f"{input_text}")
 
@@ -28,11 +28,16 @@ def generate_response_and_analyze_mood(input_text):
     chain = chat_prompt | prompt_model | ParseOutput()
     response = chain.invoke(vector_store)
 
+
+    chat_mood_prompt = ChatPromptTemplate.from_messages([
+        "You are an AI bot that analyzes the mood of the conversation so far. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out. You output only the emoji, no quotes or other text.",
+        *vector_store.get('moodanalyzer_history')
+    ])
+
     # Model for analyzing mood
-    mood_prompt = f"Analyze the mood of this conversation so far: {vector_store.get('moodanalyzer_history')}. Use only one of three colorful emojis to describe the mood. Green, yellow or red., where green is friendly, yellow is neutral and red is angry. You output only the emoji, no quotes or other text. You output text only when the red is angry and there is something really wrong that must be pointed out. You output only the emoji, no quotes or other text."
 
-    mood_analysis = mood_model(mood_prompt)
-
+    chain_mood = chat_mood_prompt | mood_model | ParseOutput()
+    mood_analysis = chain.invoke(vector_store)
 
 
     st.info(response)
