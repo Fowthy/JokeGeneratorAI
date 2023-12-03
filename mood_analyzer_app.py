@@ -33,7 +33,8 @@ def generate_response_and_analyze_mood(input_text):
     # Define the model that will generate the response based on the user prompt and the mood analysis
     prompt_model = ChatOpenAI(temperature=0.7, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
     mood_model = ChatOpenAI(temperature=0.3, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
-    
+    recommendation_model = ChatOpenAI(temperature=0.3, openai_api_key=os.environ['OPENAI_API_KEY'], model='gpt-3.5-turbo-1106')
+
     vector_store.setdefault('moodanalyzer_history', []).append(f"User's input: {input_text}")
     
     chat_prompt = ChatPromptTemplate.from_messages([
@@ -59,13 +60,25 @@ def generate_response_and_analyze_mood(input_text):
     chain_mood = chat_mood_prompt | mood_model | ParseOutput()
     mood_analysis = chain_mood.invoke(vector_store)
 
+    vector_store.setdefault('moodanalyzer_history', []).append(f"Model's output: {response}. Mood Analysis: {mood_analysis}. ")
+
+    recomendadion_prompt = ChatPromptTemplate.from_messages([
+        "You are an AI bot that gives recommendations based on the mood analysis. You output only the recommendation, no quotes or other text.",
+        *vector_store.get('moodanalyzer_history')
+    ])
+
+    chain_recommendation = recomendadion_prompt | recommendation_model | ParseOutput()
+    recommendation = chain_recommendation.invoke(vector_store)
+
+
     # Output the response and the mood analysis to streamlit
     st.info(response)
     st.header('Mood Analysis')
     st.info(mood_analysis)
+    st.header('Recommendation')
+    st.info(recommendation)
 
     # Update the vector_store for future interactions
-    vector_store.setdefault('moodanalyzer_history', []).append(f"Model's output: {response}. Mood Analysis: {mood_analysis}. ")
 
         # Update the vector_store for future interactions
     st.session_state.moodanalyzer_store = vector_store
