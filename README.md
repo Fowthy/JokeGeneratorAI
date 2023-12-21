@@ -14,7 +14,7 @@ This repository contains three AI projects developed as part of a university ass
 - [Health and Fitness Advisor](https://nlpplayground-igljhf9cldf6nt3rbtpoja.streamlit.app/)
 
 ## AI Album Generator
-album_generator.py
+album_generation_app.py
 
 ![AI Album Generator](assets/1.png)
 
